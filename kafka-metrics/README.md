@@ -26,7 +26,7 @@ $ kubectl get pods -l=name=strimzi-cluster-operator
 
 
 ```sh
-$ kubectl apply -f kafka-metrics.yaml
+$ kubectl apply -f kafka-metrics/kafka-metrics.yaml
 ```
 
 Verificando o recurso Kafka Criado
@@ -45,7 +45,7 @@ $ kubectl get kafka
 
 ### Executando o deployment do operator prometheus
 ```sh
-$ kubectl apply -f prometheus-operator-deployment.yaml
+$ kubectl apply -f kafka-metrics/prometheus-operator-deployment.yaml
 ```
 
 > Ponto a observar:
@@ -61,9 +61,9 @@ $ kubectl get pods|grep prometheus
 
 > Uma configuração adicional relacionada ao Prometheus também é fornecida para os seguintes arquivos:
 
-* prometheus-additional.yaml
-* prometheus-rules.yaml
-* strimzi-pod-monitor.yaml
+* kafka-metrics/prometheus-additional.yaml
+* kafka-metrics/prometheus-rules.yaml
+* kafka-metrics/strimzi-pod-monitor.yaml
 
 > O Operador do Prometheus não possui um recurso de monitoramento, como o PodMonitor de scraping nodes, portanto, o arquivo `prometheus-additional.yaml` contém a configuração adicional necessária.
 
@@ -80,7 +80,7 @@ $ create secret generic additional-scrape-configs --from-file=prometheus-additio
 > Atualize a propriedade `namespaceSelector.matchNames` com o namespace em que os pods para extrair as métricas estão em execução.
 
 ```sh
-$ kubectl apply -f strimzi-pod-monitor.yaml
+$ kubectl apply -f kafka-metrics/strimzi-pod-monitor.yaml
 ```
 
 
@@ -89,7 +89,7 @@ $ kubectl apply -f strimzi-pod-monitor.yaml
 > As regras para o Exportador Kafka são definidas no arquivo prometheus-rules.yaml e implementadas com o Prometheus. 
 
 ```sh
-$ kubectl apply -f prometheus-rules.yaml
+$ kubectl apply -f kafka-metrics/prometheus-rules.yaml
 ```
 
 O ultimo arquivo e não menos importante o `prometheus.yaml`
@@ -99,7 +99,7 @@ O arquivo prometheus.yaml de instalação já contem a propridade `additionalScr
  As propriedades `subjects.namespace` `alerting.alertmanagers.namespace` estão apontandas para o namespace default do kubernetes
 
 ```sh
-$ kubectl apply -f ./examples/metrics/prometheus-install/prometheus.yaml
+$ kubectl apply -f kafka-metrics/prometheus.yaml
 ```
 
 Se tudo der certo o pod como o prometheus vai estar rodando
@@ -113,7 +113,7 @@ kubectl get pods|grep prometheus
 ###Subindo ambiente do Grafana
 
 ```sh
-$ kubectl apply -f ./examples/metrics/grafana-install/grafana.yaml
+$ kubectl apply -f kafka-metrics/grafana.yaml
 $ kubectl get pods|grep grafana
 ```
 

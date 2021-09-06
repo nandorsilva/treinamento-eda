@@ -1,0 +1,33 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+   name: my-connect
+   labels:
+    app: my-connect
+   annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  image: fernandos/strimzi-kafkaconnect-debezium:0.20.0-kafka-2.6.0
+  replicas: 1 
+  bootstrapServers: cluster-eda-kafka-bootstrap:9092
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: aks-offsets
+    config.storage.topic: aks-configs
+    status.storage.topic: aks-status
+    offset.storage.partitions: 1
+    status.storage.partitions: 1
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+    offset.flush.interval.ms: 10000
+    connections.max.idle.ms: 180000
+    metadata.max.age.ms: 180000
+    internal.key.converter.schemas.enable: false
+    internal.value.converter.schemas.enable: false
+    config.providers: file
+    config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: false
+    value.converter.schemas.enable: false    

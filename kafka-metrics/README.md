@@ -67,8 +67,7 @@ $ kubectl get pods|grep prometheus
 
 > O Operador do Prometheus não possui um recurso de monitoramento, como o PodMonitor de scraping nodes, portanto, o arquivo `prometheus-additional.yaml` contém a configuração adicional necessária.
 
-Criar uma secrets parar configurações adicionais, é recomendado adicionar alguns destinos de scraping adicionais para cAdvisor, kubelet, pods e serviços. Eles podem ser adicionados ao recurso do Prometheus usando a propriedade
-`spec.additionalScrapeConfigs`. Para fazer isso, precisamos criar uma secrets do Kubernetes
+Criar uma secrets parar configurações adicionais, é recomendado adicionar alguns destinos de scraping adicionais para cAdvisor, kubelet, pods e serviços. Eles podem ser adicionados ao recurso do Prometheus usando a propriedade `spec.additionalScrapeConfigs`. Para fazer isso, precisamos criar uma secrets do Kubernetes.
 
 ```sh
 $ create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml

@@ -25,7 +25,7 @@ Pode criado? Vamos ver!
 $ kubectl get pods
 ```
 
-Guardar o nome do Pod na variável NAME_POD_KAFKA_CONNECT para a acesso posterior.
+Guardar o nome do Pod na variável NAME_POD_KAFKA_CONNECT para o acesso posterior.
 
 ```sh
 $ export NAME_POD_KAFKA_CONNECT=$(kubectl get pods --selector=app.kubernetes.io/instance=my-connect --output=jsonpath={.items..metadata.name})
@@ -62,7 +62,7 @@ Testando a conectividade
 
 ![](../documentos/sql-server-connect.png)
 
-Para esse tutorial estou utilizando a imagem sql server da Microsoft `mcr.microsoft.com/mssql/server:2019-latest`
+Para esse tutorial estou utilizando a imagem sql server da Microsoft `mcr.microsoft.com/mssql/server:2019-latest`.
 Para criar a estrutura dos dados estou utilizando o próprio container criado.
 
 > O arquivo para habilitar CDC e criar o banco de dados, as tabelas e popular com alguns dados está em sql/init.sql que foi executado via Microsoft SQL Server Management Studio ou você pode executar pelo próprio pod conforme código abaixo
@@ -82,7 +82,7 @@ $ kubectl apply -f kafka-kafka-connect/connector-debezium-sql.yaml
 Verificando se o objeto foi criado
 
 ```sh
- kubectl get KafkaConnector
+ $ kubectl get KafkaConnector
 ```
 
 > Algumas propriedades precisam ser alteradas no arquivo `connector-debezium-sql.yaml` como o ip do seu banco de dados sql server representado pela sua propriedade `spec.config.database.hostname`.
@@ -105,7 +105,7 @@ Vamos ver se o conector foi criado. Usando o próprio Pod para listar os conecto
 
 ```sh
 $ export NAME_POD_KAFKA_CONNECT=$(kubectl get pods --selector=app.kubernetes.io/instance=my-connect --output=jsonpath={.items..metadata.name})
- kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8083/connectors
+$ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8083/connectors
 ```
 
 Pode-se ver o status do conector, se a propriedade `state` estiver como `RUNNING`, connector está funcionando normalmente
@@ -114,7 +114,7 @@ Pode-se ver o status do conector, se a propriedade `state` estiver como `RUNNING
 $ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8083/connectors/debezium-connector/status
 ```
 
-O conector agora deve entrar em ação e enviar os eventos do CDC para um tópico do Kafka chamado, `<database.server.name>.<table name>` por exemplo, `sqldebezium.dbo.produtos`.
+O conector agora deve entrar em ação e enviar os eventos do CDC para o tópico do Kafka chamado, `<database.server.name>.<table name>` por exemplo, `sqldebezium.dbo.produtos`.
 
 
 
@@ -135,7 +135,7 @@ o pod do cluster kafka
 $ kubectl exec -ti cluster-eda-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server cluster-eda-kafka-bootstrap:9092 --topic sqldebezium.dbo.produtos
 ```
 
-```sh
+```
 INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');
 ```
 
@@ -145,7 +145,7 @@ INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');
 
 ### Salvando os dados do topico no arquivo txt
 
-Vamos testar salvando toda informação que chega para o tópico `sqldebezium.dbo.produtos` via connector debezium para um arquivo texto `/tmp/file-sink-connector.txt` configurado pelo arquivo `connector-sink-file.yaml` propriedade `spec.config.file`
+Vamos testar, salvando toda informação que chega para o tópico `sqldebezium.dbo.produtos` via connector debezium para um arquivo texto `/tmp/file-sink-connector.txt` configurado pelo arquivo `connector-sink-file.yaml` propriedade `spec.config.file`
 
 
 ```sh

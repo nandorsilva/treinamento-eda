@@ -7,3 +7,5 @@ A medida que as empresas tomam decisões real-time e concentre-se mais na experi
 2. [Kafka Connect](kafka-connect/README.md)
     * Implementando cluster Kafka Connect com debezium
     * Configurando connector
+3. [Kafka Connect e jaeger](kafka-connect-jaeger/README.md)
+ 

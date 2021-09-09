@@ -1,0 +1,20 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: debezium-connector
+  labels:
+    strimzi.io/cluster: my-connect
+spec:
+  class: io.debezium.connector.sqlserver.SqlServerConnector
+  tasksMax: 1
+  config:   
+    database.server.name: "sqldebezium"
+    database.hostname: "40.70.164.7"  
+    database.port: "1433"    
+    database.dbname: "dbEcommerce"
+    database.user: sa
+    database.password: 1q2w3e4r@#$
+    tasks.max: "1"
+    snapshot.mode : "schema_only"
+    database.history: "io.debezium.relational.history.MemoryDatabaseHistory"
+    

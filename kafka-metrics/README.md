@@ -35,6 +35,35 @@ Verificando o recurso Kafka Criado
 $ kubectl get kafka
 ```
 
+Toda a configuração do kafka encontra-se no arquivo config
+
+
+```sh
+ $ kubectl get configmap/cluster-eda-kafka-config -o yaml
+```
+
+## Será que Funciona??
+
+Criando um produtor e consumidor de mensagem. Iremos criar um pod com a imagem strimzi com client kafka configurado
+
+```sh
+export KAFKA_CLUSTER_NAME=cluster-eda
+kubectl run kafka-producer -ti --image=strimzi/kafka:latest-kafka-2.6.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list $KAFKA_CLUSTER_NAME-kafka-bootstrap:9092 --topic meu-primeiro-topico
+```
+
+....em outro terminal cria um pod consumindo mensagens do mesmo topico.
+
+```sh
+export KAFKA_CLUSTER_NAME=cluster-eda
+kubectl run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.6.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server $KAFKA_CLUSTER_NAME-kafka-bootstrap:9092 --topic meu-primeiro-topico --from-beginning
+```
+
+Produza uma mensagem qualquer
+```sh
+>{"nome":"teste"}
+```
+
+
 > O Kafka Exporter aprimora o monitoramento do Cluster Kafka e clientes, extraindo dados de métricas adicionais do Broker Kafka relacionados a compensação, grupos de consumidores, atraso do consumidor e tópicos.
 
 ---

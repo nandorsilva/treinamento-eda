@@ -1,6 +1,5 @@
 FROM strimzi/kafka:0.20.0-kafka-2.6.0
-ENV KAFKA_CONNECT_PLUGIN_PATH=/tmp/connect-plugins
-
-RUN mkdir $KAFKA_CONNECT_PLUGIN_PATH &&\
-    cd $KAFKA_CONNECT_PLUGIN_PATH &&\
-    curl -sfSL https://repo1.maven.org/maven2/io/debezium/debezium-connector-sqlserver/1.6.2.Final/debezium-connector-sqlserver-1.6.2.Final-plugin.tar.gz
+USER root:root
+RUN mkdir -p /opt/kafka/plugins/debezium/debezium-connector-sqlserver
+COPY ./debezium-connector-sqlserver/ /opt/kafka/plugins/debezium/debezium-connector-sqlserver
+USER 1001

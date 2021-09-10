@@ -7,8 +7,8 @@
 > O arquivo DockerFile encontrar-se versionado
 
 ```sh
-$ docker image build -t <<conta>>/strimzi-kafkaconnect-debezium:0.20.0-kafka-2.6.0 .
-$ docker image push <<conta>>/strimzi-kafkaconnect-debezium:0.20.0-kafka-2.6.0
+$ docker image build -t <<conta>>/strimzi-kafkaconnect-debezium-sql:0.20.0-kafka-2.6.0 .
+$ docker image push <<conta>>/strimzi-kafkaconnect-debezium-sql:0.20.0-kafka-2.6.0
 ```
 
 > As imagens customizadas encontra-se no https://hub.docker.com/
@@ -111,7 +111,7 @@ $ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8
 Pode-se ver o status do conector, se a propriedade `state` estiver como `RUNNING`, connector está funcionando normalmente
 
 ```sh
-$ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8083/connectors/debezium-connector/status
+$ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8083/connectors/debezium-sql-connector/status
 ```
 
 O conector agora deve entrar em ação e enviar os eventos do CDC para o tópico do Kafka chamado, `<database.server.name>.<table name>` por exemplo, `sqldebezium.dbo.produtos`.
@@ -164,5 +164,5 @@ $ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- curl  http://localhost:8
 
 Podemos ver os registros sendo gravados no arquivo `file-sink-connector.txt`
 ```sh
- kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- tail -f /tmp/file-sink-connector.txt
+$ kubectl exec --stdin --tty $NAME_POD_KAFKA_CONNECT -- tail -f /tmp/file-sink-connector.txt
 ```

@@ -31,3 +31,16 @@ spec:
     value.converter: org.apache.kafka.connect.json.JsonConverter
     key.converter.schemas.enable: false
     value.converter.schemas.enable: false    
+  tracing:
+    type: jaeger
+  template:
+    connectContainer:
+      env:
+        - name: JAEGER_SERVICE_NAME
+          value: my-connect
+        - name: JAEGER_AGENT_HOST
+          value: my-jaeger-agent
+        - name: JAEGER_SAMPLER_TYPE
+          value: const
+        - name: JAEGER_SAMPLER_PARAM
+          value: "1"

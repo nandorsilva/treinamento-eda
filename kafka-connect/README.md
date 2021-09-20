@@ -6,9 +6,18 @@
 
 > O arquivo DockerFile encontrar-se versionado
 
+### Realizando download dos plugins Debezium Sql Server (Source) e Mongodb (Sink)
+
 ```sh
-$ docker image build -t <<conta>>/strimzi-kafkaconnect-debezium-sql:0.20.0-kafka-2.6.0 .
-$ docker image push <<conta>>/strimzi-kafkaconnect-debezium-sql:0.20.0-kafka-2.6.0
+
+$ mkdir kafka-connect/plugin
+
+$ wget https://repo1.maven.org/maven2/org/mongodb/kafka/mongo-kafka-connect/1.6.1/mongo-kafka-connect-1.6.1-all.jar -P kafka-connect/plugin
+
+$ curl https://repo1.maven.org/maven2/io/debezium/debezium-connector-sqlserver/1.6.2.Final/debezium-connector-sqlserver-1.6.2.Final-plugin.tar.gz | tar xvz -C kafka-connect/plugin
+
+$ docker image build -t <<conta>>/strimzi-kafka-connect:0.20.0-kafka-2.6.0  -f kafka-connect/Dockerfile .
+$ docker image push <<conta>>/strimzi-kafka-connect:0.20.0-kafka-2.6.0
 ```
 
 > As imagens customizadas encontra-se no https://hub.docker.com/

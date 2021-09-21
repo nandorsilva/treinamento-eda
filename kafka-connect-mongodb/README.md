@@ -1,5 +1,7 @@
 # Kafka Connect SINK Mongodb
 
+![](../documentos/connect-mongodb-02.png)
+
 Já configurado o plugin no cluster Kafka Connect no [Link aqui](../kafka-connect), vamos criar o connector SINK para o Mongodb, responsável por buscar as informações do Kafka e persistir ao Banco de dados.
 
 > Estou usando o banco de dados Mongodb configurado e criado no site https://www.mongodb.com/cloud/atlas

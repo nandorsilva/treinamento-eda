@@ -4,7 +4,7 @@ Já configurado o plugin no cluster Kafka Connect no [Link aqui](../kafka-connec
 
 > Estou usando o banco de dados Mongodb configurado e criado no site https://www.mongodb.com/cloud/atlas
 
-> No arquivo connector-sink-mongodb.yaml é necessario alterar as propriedadades do seu banco dados, tais como, `connection.ur`, `database` e `collection`.
+> No arquivo connector-sink-mongodb.yaml é necessario alterar as propriedadades do seu banco dados, tais como, `connection.uri`, `database` e `collection`.
 
 
 ```sh

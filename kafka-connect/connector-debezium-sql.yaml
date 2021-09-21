@@ -9,7 +9,7 @@ spec:
   tasksMax: 1
   config:   
     database.server.name: "sqldebezium"
-    database.hostname: "40.70.164.7"  
+    database.hostname: "20.75.43.70"  
     database.port: "1433"    
     database.dbname: "dbEcommerce"
     database.user: sa

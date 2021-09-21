@@ -58,7 +58,7 @@ Mais detalhes do que é Sql Server CDC, https://docs.microsoft.com/pt-br/sql/rel
 ### Criando um banco de dados sql server no próprio Kubernetes
 
 ```sh
-$ kubectl apply -f kafka-kafka-connect/sql.yaml
+$ kubectl apply -f kafka-connect/sql.yaml
 ```
 
 Listando o serviço do Sql Server criado
@@ -79,13 +79,17 @@ Para criar a estrutura dos dados estou utilizando o próprio container criado.
 ```sh
 $ export NAME_POD_SQL_SERVER=$(kubectl get pods --selector=app=mssql --output=jsonpath={.items..metadata.name})
 $ export SA_PASSWORD=1q2w3e4r@#$
-$ cat sql/init.sql | kubectl exec --stdin --tty $NAME_POD_SQL_SERVER -- /opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD
+$ cat kafka-connect/sql/init.sql | kubectl exec --stdin --tty $NAME_POD_SQL_SERVER -- /opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD
 ```
+
+> Algumas propriedades precisam ser alteradas no arquivo `connector-debezium-sql.yaml` como o ip do seu banco de dados sql server representado pela sua propriedade `spec.config.database.hostname`.
+
+
 
 Já com o banco criado e configurado, vamos criar o connector debezium Sql Server, responsável por buscar as informações e persistir ao Kafka
 
 ```sh
-$ kubectl apply -f kafka-kafka-connect/connector-debezium-sql.yaml
+$ kubectl apply -f kafka-connect/connector-debezium-sql.yaml
 ```
 
 Verificando se o objeto foi criado
@@ -94,7 +98,6 @@ Verificando se o objeto foi criado
  $ kubectl get KafkaConnector
 ```
 
-> Algumas propriedades precisam ser alteradas no arquivo `connector-debezium-sql.yaml` como o ip do seu banco de dados sql server representado pela sua propriedade `spec.config.database.hostname`.
 
 Algumas informações básicas sobre o connector:
 
@@ -131,6 +134,11 @@ O conector agora deve entrar em ação e enviar os eventos do CDC para o tópico
 
 Vamos inserir alguns registros na tabela produtos e listar os topicos do Kafka primeiramente
 
+```
+use dbEcommerce
+INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');
+```
+
 ```sh
 $ kubectl run kafka-listtopico -ti --image=strimzi/kafka:latest-kafka-2.6.0 --rm=true --restart=Never -- bin/kafka-topics.sh --list --bootstrap-server cluster-eda-kafka-bootstrap:9092
 ```
@@ -144,9 +152,7 @@ o pod do cluster kafka
 $ kubectl exec -ti cluster-eda-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server cluster-eda-kafka-bootstrap:9092 --topic sqldebezium.dbo.produtos
 ```
 
-```
-INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');
-```
+
 
 ![](../documentos/mensagens.png)
 

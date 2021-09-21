@@ -1,0 +1,20 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: connetor-sink-mongodb
+  labels:
+    strimzi.io/cluster: my-connect
+spec:
+  class: com.mongodb.kafka.connect.MongoSinkConnector
+  tasksMax: 1
+  config:   
+    connection.uri: ""
+    database: ""  
+    collection: "produtossink"   
+    topics: sqldebezium.dbo.produtos
+    max.num.retries: 1
+    change.data.capture.handler: "com.mongodb.kafka.connect.sink.cdc.debezium.rdbms.mysql.MysqlHandler"
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    key.converter.schemas.enable=: false
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: false  

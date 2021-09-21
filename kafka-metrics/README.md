@@ -139,7 +139,7 @@ kubectl get pods|grep prometheus
 
 ---
 
-###Subindo ambiente do Grafana
+### Subindo ambiente do Grafana
 
 ```sh
 $ kubectl apply -f kafka-metrics/grafana.yaml
